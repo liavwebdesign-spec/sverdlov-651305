@@ -212,7 +212,7 @@ html.qa .preloader { display: none !important; }
 }
 .hero::before {
   content: ''; position: absolute; inset: 0; z-index: -2;
-  background: url('images/hero-land-dusk.jpg') center 55% / cover no-repeat;
+  background: url('images/hero-land-dusk.jpg') center var(--hero-y, 55%) / cover no-repeat;
 }
 .hero::after {
   content: ''; position: absolute; inset: 0; z-index: -1;
@@ -501,3 +501,67 @@ html.qa { scroll-behavior: auto; }
   body.nav-open { overflow: hidden; }
 }
 @media (min-width: 768px) { .main-nav .nav-lang { display: none; } }
+
+
+/* ===================================================================
+   סבב תנועה 2 (6.9.2026)
+   G2 חשיפת תמונות · פרלקס הירו · G4ב לכותרות · B15 זוהר · S16 נשימה
+   =================================================================== */
+
+/* ---- G2: התמונה נצבעת מלמטה למעלה בקצב הגלילה. בלי JS היא פשוט גלויה ---- */
+.paint { --reveal: 100%; --feather: 14%; }
+html.js .paint img {
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 var(--reveal), transparent calc(var(--reveal) + var(--feather)), transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, #000 var(--reveal), transparent calc(var(--reveal) + var(--feather)), transparent 100%);
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+}
+html.qa .paint img { -webkit-mask-image: none !important; mask-image: none !important; }
+
+/* ---- G4ב: כותרות שמתבהרות מילה-מילה (פיצול ידני, ראה main.js) ---- */
+.split-words .w { display: inline-block; }
+
+/* ---- כרטיס תחום: הרמה עדינה והמספר מתבהר ---- */
+.area { transition: border-color .3s var(--ease), transform .3s var(--ease); }
+.area:hover { transform: translateY(-2px); }
+.area .num { transition: color .3s var(--ease); }
+.area:hover .num { color: var(--ink); }
+
+/* ---- B15: זוהר רדיאלי בפאנלים הכהים. עומק בלי רעש ובלי filter ---- */
+.form, .flag-list { overflow: hidden; }
+.form::after, .flag-list::after {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  inset-inline-start: -20%; top: -32%; width: 440px; height: 440px;
+  background: radial-gradient(circle, rgba(244, 241, 236, .13) 0%, rgba(244, 241, 236, 0) 68%);
+}
+.form > *, .flag-list > * { position: relative; z-index: 1; }
+
+/* ---- S16: סקשן נשימה. משפט אחד בסקאלת כותרת על ויז'ואל רחב ---- */
+.breath {
+  isolation: isolate; overflow: hidden; min-height: 58vh;
+  display: grid; place-items: center; text-align: center;
+  padding-block: var(--sec-loose);
+}
+.breath::before {
+  content: ''; position: absolute; inset: 0; z-index: -2;
+  background: url('images/stone.jpg') center / cover no-repeat;
+}
+.breath::after {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(to bottom, var(--bg) 0%, rgba(22, 35, 58, .78) 24%, rgba(22, 35, 58, .78) 76%, var(--surface) 100%);
+}
+.breath-line {
+  font-family: 'Pompei'; font-weight: 700; color: var(--ink);
+  font-size: var(--fs-h2); line-height: var(--lh-h2);
+  max-width: 30ch; margin-inline: auto; text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .paint img { -webkit-mask-image: none !important; mask-image: none !important; }
+  .breath-line .w { opacity: 1 !important; }
+}
+@media (max-width: 767px) {
+  .breath { min-height: 0; padding-block: var(--sec); }
+  .breath-line { max-width: 18ch; }
+}

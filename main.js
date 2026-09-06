@@ -80,6 +80,9 @@
   var pre = document.getElementById('preloader');
   var heroEls = document.querySelectorAll('[data-hero-el]');
   var heroStarted = false;
+  var wmPaths = document.querySelectorAll('.hero-watermark path');
+  var canDraw = hasGsap && !reduced && typeof DrawSVGPlugin !== 'undefined' && wmPaths.length;
+  if (canDraw) gsap.set(wmPaths, { drawSVG: '0%' });
 
   function startHero() {
     if (heroStarted) return;
@@ -87,6 +90,8 @@
     /* ה-reveal מתחיל רק כשהמסך נחשף. אחרת האלמנטים שבמסך הראשון נחשפים מאחורי הפרילודר
        והעמוד נפתח סטטי (נתפס בפועל, 6.9.2026) */
     initReveal();
+    /* הסימן ממשיך להצטייר בהירו, כהמשך ישיר של הפרילודר */
+    if (canDraw) gsap.to(wmPaths, { drawSVG: '100%', duration: 1.4, ease: 'power2.inOut', stagger: 0.2, delay: 0.15 });
     if (!hasGsap || reduced || !heroEls.length) return;
     gsap.timeline({ defaults: { ease: 'power3.out' } })
         .to(heroEls, { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.12 });
@@ -157,11 +162,39 @@
     });
     return el.querySelectorAll('.w');
   }
-  var flagH2 = document.getElementById('flagH2');
-  if (hasGsap && !reduced && flagH2) {
-    var ws = splitWords(flagH2);
-    gsap.from(ws, { opacity: 0.18, stagger: 0.35, ease: 'none',
-      scrollTrigger: { trigger: flagH2, start: 'top 85%', end: 'top 45%', scrub: 1 } });
+  var splitHeads = document.querySelectorAll('.split-words');
+  if (hasGsap && !reduced && splitHeads.length) {
+    splitHeads.forEach(function (h) {
+      var ws = splitWords(h);
+      if (!ws.length) return;
+      gsap.from(ws, { opacity: 0.18, stagger: 0.35, ease: 'none',
+        scrollTrigger: { trigger: h, start: 'top 85%', end: 'top 45%', scrub: 1 } });
+    });
+  }
+
+  /* ---- G2: תמונות נצבעות מלמטה למעלה בקצב הגלילה (מסכת גרדיאנט) ---- */
+  var paints = document.querySelectorAll('.paint');
+  if (hasGsap && !reduced && paints.length) {
+    paints.forEach(function (el) {
+      var st = { val: 0 };
+      el.style.setProperty('--reveal', '0%');
+      gsap.to(st, {
+        val: 100, ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top 88%', end: 'top 38%', scrub: 0.6 },
+        onUpdate: function () { el.style.setProperty('--reveal', st.val + '%'); }
+      });
+    });
+  }
+
+  /* ---- פרלקס עדין בהירו: הרקע והווטרמרק בהפרש מהירות. דסקטופ בלבד ---- */
+  if (hasGsap && !reduced) {
+    var mmHero = gsap.matchMedia();
+    mmHero.add('(min-width: 768px)', function () {
+      var stHero = { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true };
+      gsap.set('.hero', { '--hero-y': '55%' });
+      gsap.to('.hero', { '--hero-y': '46%', ease: 'none', scrollTrigger: stHero });
+      gsap.to('.hero-watermark', { y: 80, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    });
   }
 
   /* ---- B18: קו התהליך שמתמלא בגלילה ---- */
@@ -227,6 +260,17 @@
   if (hasGsap && !reduced) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.addEventListener('load', function () { ScrollTrigger.refresh(); paintRail(); });
+  }
+
+  /* ---- ?scroll=N: קופץ למיקום גלילה. שער QA לצילומי מסך אוטומטיים ---- */
+  var scrollTo = /[?&]scroll=(\d+)/.exec(location.search);
+  if (scrollTo) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.addEventListener('load', function () {
+      /* הזזת מרג'ין ולא גלילה: צילום מסך headless אחרי scroll מחזיר פריים ריק */
+      document.body.style.marginTop = '-' + (+scrollTo[1]) + 'px';
+      if (hasGsap) ScrollTrigger.refresh();
+    });
   }
 
   /* ---- ?debug=1: סריקת גלישה אופקית ---- */
