@@ -1,30 +1,28 @@
 /* ===================================================================
    SVERDLOV. עור "נייבי שקט" על המסגרת הנוזלית · 6.9.2026
    כיול (נמדד בפרוטוקול font-calibration, _design/measure.html):
-   Pompei Bold      F=0.923  λ=1.00  (H1/H2, 700)
-   Pompei Medium    F=0.975  λ=1.00  (מספור תצוגה, 500)
-   Discovery Medium F=1.129  λ=0.80  (גוף/ליד/מטא/כפתורים, 500)
-   Discovery Bold   F=1.074  λ=0.80  (H3, הדגשה, 700)
+   Pompei Medium    F=0.975  λ=1.00  (H1/H2 ומספור תצוגה, 500)
+   Discovery Medium F=1.129  λ=0.80  (גוף/ליד/מטא/כפתורים/H3, 500)
+   הכרעת ליאב (6.9.2026): בלי המשקל הכבד של פומפאי ובלי זה של דיסקברי.
+   הגדלים כוילו מחדש לפי הפקטורים של Medium, וההדגשה עברה ממשקל לצבע.
    צבעים: מדריך הלוגו של לאון (Navy #16233A · Cream #F4F1EC · Advocate #5B6478)
    כל clamp: רווחים סביב + / -
    =================================================================== */
 
-@font-face { font-family: 'Pompei'; src: url('fonts/Pompei_FS-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
 @font-face { font-family: 'Pompei'; src: url('fonts/Pompei_FS-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
 @font-face { font-family: 'Discovery'; src: url('fonts/Discovery_Fs-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
-@font-face { font-family: 'Discovery'; src: url('fonts/Discovery_Fs-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
 
 :root {
   /* ---- מסגרת נוזלית ---- */
   --gutter: clamp(24px, 5vw, 96px);
 
-  /* ---- כותרות (Pompei Bold) ---- */
-  --fs-h1: clamp(41px, 4vw + 0.5rem, 84px);       /* מוקטן מהטבלה: הכותרת דו-משפטית וארוכה */
-  --fs-h2: clamp(30px, 2.4vw + 0.37rem, 66px);    /* 32/2.6vw/72 × 0.923 */
+  /* ---- כותרות (Pompei Medium) ---- */
+  --fs-h1: clamp(41px, 4vw + 0.5rem, 84px);       /* מוקטן מהטבלה פעמיים: הכותרת ארוכה ונשברת ל-4 שורות */
+  --fs-h2: clamp(32px, 2.53vw + 0.39rem, 70px);   /* 32/2.6vw/72 × 0.975 */
   --fs-display: clamp(52px, 5vw + 0.5rem, 120px); /* מספור ענק, Pompei Medium */
 
   /* ---- טקסט (Discovery) ---- */
-  --fs-h3: clamp(21px, 1.29vw + 0.54rem, 37px);   /* 20/1.2vw/34 × 1.074 (Bold) */
+  --fs-h3: clamp(22px, 1.36vw + 0.57rem, 39px);   /* 20/1.2vw/34 × 1.129 (Medium) */
   --fs-lead: clamp(21px, 1.13vw + 0.62rem, 34px); /* × 1.129 */
   --fs-body: clamp(18px, 0.62vw + 0.73rem, 25px); /* × 1.129 */
   --fs-meta: clamp(15px, 0.62vw + 0.51rem, 20px); /* × 1.129 */
@@ -72,10 +70,10 @@
 
 @media (max-width: 767px) {
   :root {
-    --fs-h1: 36px;
-    --fs-h2: 27px;
+    --fs-h1: 38px;
+    --fs-h2: 29px;
     --fs-display: 44px;
-    --fs-h3: 20px;
+    --fs-h3: 21px;
     --fs-lead: 20px;
     --fs-body: 18px;
     --fs-meta: 16px;
@@ -93,14 +91,14 @@ body {
   font-size: var(--fs-body); line-height: var(--lh-body); font-weight: 500;
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
-h1, h2 { font-family: 'Pompei', 'Discovery', sans-serif; font-weight: 700; margin: 0; color: var(--ink); }
+h1, h2 { font-family: 'Pompei', 'Discovery', sans-serif; font-weight: 500; margin: 0; color: var(--ink); }
 h1 { font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: -0.01em; }
 h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); }
-h3 { font-family: 'Discovery'; font-weight: 700; font-size: var(--fs-h3); line-height: var(--lh-h3); margin: 0; color: var(--ink); }
+h3 { font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-h3); line-height: var(--lh-h3); margin: 0; color: var(--ink); }
 p { margin: 0; max-width: 640px; }
 p + p { margin-top: 16px; }
 a { color: inherit; text-decoration: none; }
-strong, b { font-weight: 700; }
+strong, b { font-weight: 500; color: var(--ink); } /* ההדגשה בצבע, כי אין משקל כבד */
 img, svg { display: block; max-width: 100%; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 :focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
@@ -137,7 +135,7 @@ section { position: relative; padding-inline: var(--gutter); padding-block: var(
 /* ==== BUTTONS ==== */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  font-size: var(--fs-meta); font-weight: 700; line-height: 1;
+  font-size: var(--fs-meta); font-weight: 500; line-height: 1;
   padding: 0 26px; min-height: 52px; border-radius: var(--r-control);
   border: 1px solid transparent; white-space: nowrap;
   transition: background-color .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease), transform .12s var(--ease), box-shadow .18s var(--ease);
@@ -153,7 +151,7 @@ section { position: relative; padding-inline: var(--gutter); padding-block: var(
 .btn-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .btn-sub { margin-top: 14px; }
 
-.arrow-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--ink);
+.arrow-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--ink);
   transition: gap .18s var(--ease), color .18s var(--ease); }
 .arrow-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; transition: transform .18s var(--ease); }
 .arrow-link:hover { gap: 12px; }
@@ -255,7 +253,7 @@ html.qa .preloader { display: none !important; }
   will-change: transform;
 }
 .lane:hover { border-color: var(--line-strong); box-shadow: var(--shadow-lift); background: #20304D; }
-.lane h3 { font-family: 'Pompei'; font-weight: 700; font-size: clamp(24px, 1.6vw + 0.5rem, 40px); line-height: 1.15; }
+.lane h3 { font-family: 'Pompei'; font-weight: 500; font-size: clamp(25px, 1.69vw + 0.53rem, 42px); line-height: 1.15; }
 .lane p { color: var(--ink-soft); }
 .lane .arrow-link { margin-top: auto; padding-top: 8px; }
 .lane-tag { font-size: 13px; letter-spacing: .12em; color: var(--muted); }
@@ -325,7 +323,7 @@ html.qa .preloader { display: none !important; }
 .process-step p { color: var(--ink-soft); }
 .why-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-m); margin-top: var(--sec); text-align: start; }
 .why-row > div { border-top: 1px solid var(--line-strong); padding-top: 20px; }
-.why-row h3 { font-size: clamp(19px, 1vw + 0.55rem, 28px); margin-bottom: 8px; }
+.why-row h3 { font-size: clamp(20px, 1.05vw + 0.58rem, 29px); margin-bottom: 8px; }
 .why-row p { color: var(--ink-soft); font-size: var(--fs-meta); line-height: 1.45; }
 
 /* ==== ABOUT (C1 split) ==== */
@@ -346,7 +344,7 @@ html.qa .preloader { display: none !important; }
 }
 .guide-row:hover { background: var(--surface); padding-inline: 20px; }
 .guide-row .cat { font-size: 13px; letter-spacing: .1em; color: var(--muted); }
-.guide-row .title { font-family: 'Discovery'; font-weight: 700; font-size: var(--fs-body); color: var(--ink); }
+.guide-row .title { font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-body); color: var(--ink); }
 .guide-row svg { width: 20px; height: 20px; stroke: var(--muted); fill: none; stroke-width: 1.7; transition: transform .25s var(--ease), stroke .25s var(--ease); }
 .guide-row:hover svg { transform: translateX(-4px); stroke: var(--ink); }
 .guides .after { margin-top: 40px; }
@@ -356,7 +354,7 @@ html.qa .preloader { display: none !important; }
 .faq-item { border-bottom: 1px solid var(--line); }
 .faq-q {
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; text-align: start;
-  padding-block: 22px; font-family: 'Discovery'; font-weight: 700; font-size: var(--fs-body); color: var(--ink);
+  padding-block: 22px; font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-body); color: var(--ink);
   transition: color .15s var(--ease);
 }
 .faq-q:hover { color: var(--cream-2); }
@@ -414,7 +412,7 @@ html.qa .preloader { display: none !important; }
 .foot-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--gap-m); align-items: start; }
 .foot-brand img { height: 52px; width: auto; }
 .foot-brand p { margin-top: 18px; font-size: var(--fs-meta); line-height: 1.5; max-width: 360px; }
-.foot-col h4 { font-family: 'Discovery'; font-weight: 700; font-size: var(--fs-meta); color: var(--ink); margin: 0 0 14px; }
+.foot-col h4 { font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-meta); color: var(--ink); margin: 0 0 14px; }
 .foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .foot-col a { font-size: var(--fs-meta); transition: color .15s var(--ease); }
 .foot-col a:hover { color: var(--ink); }
@@ -552,7 +550,7 @@ html.qa .paint img { -webkit-mask-image: none !important; mask-image: none !impo
     linear-gradient(to bottom, var(--bg) 0%, rgba(22, 35, 58, .78) 24%, rgba(22, 35, 58, .78) 76%, var(--surface) 100%);
 }
 .breath-line {
-  font-family: 'Pompei'; font-weight: 700; color: var(--ink);
+  font-family: 'Pompei'; font-weight: 500; color: var(--ink);
   font-size: var(--fs-h2); line-height: var(--lh-h2);
   max-width: 30ch; margin-inline: auto; text-wrap: balance;
 }
