@@ -9,9 +9,17 @@
 <link rel="icon" href="assets/brand/LS-favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/Pompei_FS-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Discovery_Fs-Medium.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=1">
+<link rel="stylesheet" href="styles.css?v=6">
+<noscript><style>.preloader{display:none!important}</style></noscript>
 </head>
 <body>
+
+<div class="preloader" id="preloader" aria-hidden="true">
+  <svg class="pre-mark" viewBox="-20 -20 240 240">
+    <path d="M0 0 V132 H100"/>
+    <path d="M188 72 H133 A30 30 0 0 0 133 132 H163 A30 30 0 0 1 163 192 H100"/>
+  </svg>
+</div>
 
 <header class="site-header" id="siteHeader">
   <a class="brand" href="index.html" aria-label="עו"ד לאון סברדלוב, לעמוד הבית">
@@ -59,13 +67,11 @@
       <span>מעל 10 שנים בתחום הקרקעות</span>
     </div>
   </div>
-  <div class="hero-visual" aria-hidden="true">
-    <svg class="hero-mark" id="heroMark" viewBox="-20 -20 240 240">
-      <path class="mark-l" d="M0 0 V132 H100"/>
-      <path class="mark-s" d="M188 72 H133 A30 30 0 0 0 133 132 H163 A30 30 0 0 1 163 192 H100"/>
-    </svg>
-    <p class="photo-note">[מקום לתמונת תדמית של לאון, צילום סביבתי במשרד. עד אז: סימן המותג]</p>
-  </div>
+  <!-- כשתגיע תמונת תדמית של לאון: להחזיר כאן את .hero-visual עם .hero-photo ולהחזיר את הגריד לשתי עמודות -->
+  <svg class="hero-watermark" viewBox="-20 -20 240 240" aria-hidden="true">
+    <path d="M0 0 V132 H100"/>
+    <path d="M188 72 H133 A30 30 0 0 0 133 132 H163 A30 30 0 0 1 163 192 H100"/>
+  </svg>
 </section>
 
 <!-- SECTION 02, שני מסלולים -->
@@ -134,7 +140,11 @@
         <p class="btn-sub">5 שאלות, ונחזור אליכם</p>
       </div>
     </div>
-    <aside class="flag-list reveal">
+    <aside class="flag-visual">
+      <figure class="flag-photo reveal">
+        <img src="images/land-plots.jpg" alt="צילום אווירי של חלקות קרקע מחולקות בדרכי גישה" width="1400" height="934" loading="lazy">
+      </figure>
+      <div class="flag-list reveal">
       <h3>מה כולל הדו"ח</h3>
       <ul>
         <li>מסמכי העסקה והחוזה</li>
@@ -143,6 +153,7 @@
         <li>פוטנציאל תכנוני עתידי</li>
         <li>היציבות המשפטית והפיננסית של המוכר</li>
       </ul>
+      </div>
     </aside>
   </div>
 </section>
@@ -182,7 +193,9 @@
 <!-- SECTION 06, על לאון -->
 <section class="about" id="about">
   <div class="about-grid">
-    <div class="photo-ph reveal" aria-hidden="true">[להזין מלאון: תמונת תדמית, שונה מזו שבהירו]</div>
+    <figure class="about-photo reveal">
+      <img src="images/office.jpg" alt="פינת עבודה במשרד עורכי דין, מסמכים על שולחן עץ" width="1200" height="1600" loading="lazy">
+    </figure>
     <div class="about-copy">
       <div class="kicker reveal"><b class="k-num">04</b><span>המשרד</span></div>
       <h2 class="reveal">עו"ד לאון סברדלוב</h2>
@@ -243,7 +256,6 @@
 
 <!-- SECTION 09, צור קשר (סוגר שנמס לפוטר) -->
 <section class="closer full-bleed" id="contact">
-  <img class="closer-mark" src="assets/brand/LS-mark-white.svg" alt="" aria-hidden="true">
   <div class="closer-panel">
     <div class="closer-copy">
       <div class="kicker reveal"><b class="k-num">07</b><span>צור קשר</span></div>
@@ -347,6 +359,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
-<script src="main.js?v=1"></script>
+<script src="main.js?v=6"></script>
 </body>
 </html>

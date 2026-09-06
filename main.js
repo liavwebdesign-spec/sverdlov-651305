@@ -51,17 +51,43 @@
     revealEls.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---- hero: הסימן נמשך בקו + כניסת התוכן בטיימליין ---- */
+  /* ---- preloader: הסימן מצטייר, המסך מתרומם, ואז נכנס ההירו ---- */
+  var pre = document.getElementById('preloader');
   var heroEls = document.querySelectorAll('[data-hero-el]');
-  var markPaths = document.querySelectorAll('#heroMark path');
-  if (hasGsap && !reduced && heroEls.length) {
-    gsap.set(heroEls, { autoAlpha: 0, y: 34 });
-    var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    if (typeof DrawSVGPlugin !== 'undefined' && markPaths.length) {
-      gsap.set(markPaths, { drawSVG: '0%' });
-      tl.to(markPaths, { drawSVG: '100%', duration: 1.7, ease: 'power2.inOut', stagger: 0.25 }, 0);
+  var heroStarted = false;
+
+  function startHero() {
+    if (heroStarted) return;
+    heroStarted = true;
+    if (!hasGsap || reduced || !heroEls.length) return;
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to(heroEls, { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.12 });
+  }
+
+  if (hasGsap && !reduced && heroEls.length) gsap.set(heroEls, { autoAlpha: 0, y: 34 });
+
+  if (pre && !reduced && hasGsap) {
+    var t0 = Date.now(), preGone = false;
+    var preMark = pre.querySelectorAll('path');
+    if (typeof DrawSVGPlugin !== 'undefined' && preMark.length) {
+      gsap.set(preMark, { drawSVG: '0%' });
+      gsap.to(preMark, { drawSVG: '100%', duration: 1.15, ease: 'power2.inOut', stagger: 0.18 });
     }
-    tl.to(heroEls, { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.12 }, 0.35);
+    var hidePre = function () {
+      if (preGone) return;
+      preGone = true;
+      pre.classList.add('is-out');
+      startHero();
+      setTimeout(function () { if (pre.parentNode) pre.parentNode.removeChild(pre); }, 800);
+    };
+    /* נעלם כשהעמוד באמת נטען, עם מינימום שיספיק לראות את הסימן מצטייר */
+    var hideWhenReady = function () { setTimeout(hidePre, Math.max(0, 1500 - (Date.now() - t0))); };
+    if (document.readyState === 'complete') hideWhenReady();
+    else window.addEventListener('load', hideWhenReady);
+    setTimeout(hidePre, 4500); /* גיבוי: לא נתקעים אם load מתעכב */
+  } else {
+    if (pre && pre.parentNode) pre.parentNode.removeChild(pre);
+    startHero();
   }
 
   /* ---- G17 (זוג): שני המסלולים נכנסים מהצדדים בסקראב ---- */
