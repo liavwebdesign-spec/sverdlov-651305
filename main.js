@@ -38,11 +38,36 @@
     });
   }
 
-  /* ---- reveal (IO + keyframes) ---- */
+  /* ---- reveal: 16px / 0.5s, פעם אחת. עם GSAP מקבלים גם קסקדה בתוך קבוצה (G13) ---- */
   var revealEls = document.querySelectorAll('.reveal');
-  if (reduced || !('IntersectionObserver' in window)) {
-    revealEls.forEach(function (el) { el.classList.add('is-in'); });
-  } else {
+  var revealReady = false;
+
+  function initReveal() {
+    if (revealReady || !revealEls.length) return;
+    revealReady = true;
+
+    if (reduced || !('IntersectionObserver' in window)) {
+      revealEls.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
+
+    if (hasGsap) {
+      /* GSAP מנהל את השקיפות והתזוזה, ולכן לא מוסיפים is-in (שמפעיל keyframe מתחרה) */
+      gsap.set(revealEls, { autoAlpha: 0, y: 16 });
+      ScrollTrigger.batch(revealEls, {
+        start: 'top 92%',
+        once: true,
+        onEnter: function (batch) {
+          gsap.to(batch, {
+            autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out',
+            stagger: 0.08, overwrite: true
+          });
+        }
+      });
+      ScrollTrigger.refresh();
+      return;
+    }
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
@@ -59,6 +84,9 @@
   function startHero() {
     if (heroStarted) return;
     heroStarted = true;
+    /* ה-reveal מתחיל רק כשהמסך נחשף. אחרת האלמנטים שבמסך הראשון נחשפים מאחורי הפרילודר
+       והעמוד נפתח סטטי (נתפס בפועל, 6.9.2026) */
+    initReveal();
     if (!hasGsap || reduced || !heroEls.length) return;
     gsap.timeline({ defaults: { ease: 'power3.out' } })
         .to(heroEls, { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.12 });
