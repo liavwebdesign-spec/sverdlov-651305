@@ -1,40 +1,45 @@
 /* ===================================================================
    SVERDLOV. עור "נייבי שקט" על המסגרת הנוזלית · 6.9.2026
    כיול (נמדד בפרוטוקול font-calibration, _design/measure.html):
-   Pompei Medium    F=0.975  λ=1.00  (H1/H2 ומספור תצוגה, 500)
-   Discovery Medium F=1.129  λ=0.80  (גוף/ליד/מטא/כפתורים/H3, 500)
-   הכרעת ליאב (6.9.2026): בלי המשקל הכבד של פומפאי ובלי זה של דיסקברי.
-   הגדלים כוילו מחדש לפי הפקטורים של Medium, וההדגשה עברה ממשקל לצבע.
+   FUP Golan, משפחה אחת (הכרעת ליאב 8.9.2026, מחליפה את פומפאי ודיסקברי):
+   Golan SemiBold  F=0.809  λ=1.15  (H1/H2, 600)
+   Golan Medium    F=0.813  λ=1.17  (H3, כפתורים, הדגשה, 500)
+   Golan Regular   F=0.830  λ=1.19  (גוף/ליד/מטא/מספור, 400)
+   בלי Bold ובלי ExtraBold: ליאב פסל משקל כבד לכותרות.
+   גולן גבוה ורחב (H=1.14 מול 0.96 בהיבו), ולכן הגדלים ירדו כ-17% וגובה השורה עלה.
+   **גולן הוא פונט עברי בלבד, בלי אותיות לטיניות וקיריליות.** הרצף הלטיני
+   (EN/RU, כתובת המייל) נופל לפונט המערכת, וגרסאות ru/en יצטרכו פונט אחר.
    צבעים: מדריך הלוגו של לאון (Navy #16233A · Cream #F4F1EC · Advocate #5B6478)
    כל clamp: רווחים סביב + / -
    =================================================================== */
 
-@font-face { font-family: 'Pompei'; src: url('fonts/Pompei_FS-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
-@font-face { font-family: 'Discovery'; src: url('fonts/Discovery_Fs-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Golan'; src: url('fonts/Golan-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Golan'; src: url('fonts/Golan-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Golan'; src: url('fonts/Golan-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
 :root {
   /* ---- מסגרת נוזלית ---- */
   --gutter: clamp(24px, 5vw, 96px);
 
-  /* ---- כותרות (Pompei Medium) ---- */
-  --fs-h1: clamp(41px, 4vw + 0.5rem, 84px);       /* מוקטן מהטבלה פעמיים: הכותרת ארוכה ונשברת ל-4 שורות */
-  --fs-h2: clamp(32px, 2.53vw + 0.39rem, 70px);   /* 32/2.6vw/72 × 0.975 */
-  --fs-display: clamp(52px, 5vw + 0.5rem, 120px); /* מספור ענק, Pompei Medium */
+  /* ---- כותרות (Golan SemiBold, F=0.809) ---- */
+  --fs-h1: clamp(34px, 3.32vw + 0.42rem, 70px);
+  --fs-h2: clamp(27px, 2.1vw + 0.32rem, 58px);
+  --fs-display: clamp(43px, 4.15vw + 0.42rem, 100px);
 
-  /* ---- טקסט (Discovery) ---- */
-  --fs-h3: clamp(22px, 1.36vw + 0.57rem, 39px);   /* 20/1.2vw/34 × 1.129 (Medium) */
-  --fs-lead: clamp(21px, 1.13vw + 0.62rem, 34px); /* × 1.129 */
-  --fs-body: clamp(18px, 0.62vw + 0.73rem, 25px); /* × 1.129 */
-  --fs-meta: clamp(15px, 0.62vw + 0.51rem, 20px); /* × 1.129 */
-  --fs-kicker: clamp(15px, 0.79vw + 0.4rem, 21px);/* × 1.129, tracking .12em */
+  /* ---- טקסט (Golan Regular/Medium) ---- */
+  --fs-h3: clamp(18px, 1.09vw + 0.46rem, 31px);
+  --fs-lead: clamp(17px, 0.9vw + 0.5rem, 27px);
+  --fs-body: clamp(16px, 0.5vw + 0.62rem, 20px);  /* רצפת טווח: גוף לא יורד מ-16 */
+  --fs-meta: clamp(14px, 0.45vw + 0.45rem, 17px);
+  --fs-kicker: clamp(14px, 0.6vw + 0.36rem, 18px);/* tracking .12em */
 
   /* ---- גובה שורה (ref × λ) ---- */
-  --lh-h1: 1.12;
-  --lh-h2: 1.18;
-  --lh-h3: 1.08;     /* 1.35 × 0.80 */
-  --lh-lead: 1.30;   /* 1.60 × 0.80 (עוגל מעט למעלה לקריאות על כהה) */
-  --lh-body: 1.40;   /* 1.70 × 0.80 (+0.04 לקריאות טקסט בהיר על כהה) */
-  --lh-meta: 1.22;
+  --lh-h1: 1.30;     /* 1.15 × 1.15, מרוסן: טקסט גדול צריך פחות ריווח יחסי */
+  --lh-h2: 1.34;     /* 1.20 × 1.15 */
+  --lh-h3: 1.45;     /* 1.35 × 1.17 */
+  --lh-lead: 1.70;   /* 1.60 × 1.19, מרוסן מעט */
+  --lh-body: 1.80;   /* 1.70 × 1.19, מרוסן מעט */
+  --lh-meta: 1.45;
 
   /* ---- ריווח נוזלי ---- */
   --sec: clamp(64px, 7vw, 150px);
@@ -70,14 +75,14 @@
 
 @media (max-width: 767px) {
   :root {
-    --fs-h1: 38px;
-    --fs-h2: 29px;
-    --fs-display: 44px;
-    --fs-h3: 21px;
-    --fs-lead: 20px;
-    --fs-body: 18px;
-    --fs-meta: 16px;
-    --fs-kicker: 15px;
+    --fs-h1: 32px;
+    --fs-h2: 24px;
+    --fs-display: 37px;
+    --fs-h3: 18px;
+    --fs-lead: 17px;
+    --fs-body: 16px;
+    --fs-meta: 15px;
+    --fs-kicker: 14px;
   }
 }
 
@@ -87,14 +92,14 @@ html { scroll-behavior: smooth; }
 html, body { overflow-x: clip; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font-family: 'Discovery', 'Heebo', system-ui, sans-serif;
-  font-size: var(--fs-body); line-height: var(--lh-body); font-weight: 500;
+  font-family: 'Golan', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  font-size: var(--fs-body); line-height: var(--lh-body); font-weight: 400;
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
-h1, h2 { font-family: 'Pompei', 'Discovery', sans-serif; font-weight: 500; margin: 0; color: var(--ink); }
+h1, h2 { font-family: 'Golan', system-ui, Arial, sans-serif; font-weight: 600; margin: 0; color: var(--ink); }
 h1 { font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: -0.01em; }
 h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); }
-h3 { font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-h3); line-height: var(--lh-h3); margin: 0; color: var(--ink); }
+h3 { font-family: 'Golan'; font-weight: 500; font-size: var(--fs-h3); line-height: var(--lh-h3); margin: 0; color: var(--ink); }
 p { margin: 0; max-width: 640px; }
 p + p { margin-top: 16px; }
 a { color: inherit; text-decoration: none; }
@@ -123,7 +128,7 @@ section { position: relative; padding-inline: var(--gutter); padding-block: var(
   font-size: var(--fs-kicker); line-height: 1; letter-spacing: 0.12em; font-weight: 500;
   color: var(--muted); text-transform: none; margin-bottom: 20px;
 }
-.kicker .k-num { font-family: 'Pompei'; font-weight: 500; letter-spacing: 0; color: var(--ink); }
+.kicker .k-num { font-family: 'Golan'; font-weight: 500; letter-spacing: 0; color: var(--ink); }
 .kicker .k-num::after { content: ''; display: inline-block; width: 40px; height: 1px; margin-inline-start: 12px; vertical-align: middle;
   background: linear-gradient(to left, var(--line-strong), transparent); }
 .centered .kicker { justify-content: center; }
@@ -191,7 +196,7 @@ html.qa .preloader { display: none !important; }
 .main-nav a:hover { color: var(--ink); }
 .main-nav a:hover::after { transform: scaleX(1); }
 .header-end { display: flex; align-items: center; gap: 18px; }
-.lang-switch { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); font-family: 'Discovery'; }
+.lang-switch { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); font-family: 'Golan', system-ui, Arial, sans-serif; }
 .lang-switch a { transition: color .15s var(--ease); }
 .lang-switch a:hover, .lang-switch a[aria-current] { color: var(--ink); }
 .lang-switch span { color: var(--muted-2); }
@@ -253,7 +258,7 @@ html.qa .preloader { display: none !important; }
   will-change: transform;
 }
 .lane:hover { border-color: var(--line-strong); box-shadow: var(--shadow-lift); background: #20304D; }
-.lane h3 { font-family: 'Pompei'; font-weight: 500; font-size: clamp(25px, 1.69vw + 0.53rem, 42px); line-height: 1.15; }
+.lane h3 { font-family: 'Golan'; font-weight: 600; font-size: clamp(21px, 1.4vw + 0.44rem, 35px); line-height: 1.30; }
 .lane p { color: var(--ink-soft); }
 .lane .arrow-link { margin-top: auto; padding-top: 8px; }
 .lane-tag { font-size: 13px; letter-spacing: .12em; color: var(--muted); }
@@ -277,7 +282,7 @@ html.qa .preloader { display: none !important; }
 }
 .area::before { content: ''; position: absolute; top: -1px; inset-inline-start: 0; width: 0; height: 1px; background: var(--cream); transition: width .5s var(--ease); }
 .area:hover::before { width: 100%; }
-.area .num { font-family: 'Pompei'; font-weight: 500; font-size: var(--fs-meta); letter-spacing: .08em; color: var(--muted); }
+.area .num { font-family: 'Golan'; font-weight: 500; font-size: var(--fs-meta); letter-spacing: .08em; color: var(--muted); }
 .area p { color: var(--ink-soft); }
 .area .arrow-link { margin-top: 6px; font-size: var(--fs-meta); }
 
@@ -316,14 +321,14 @@ html.qa .preloader { display: none !important; }
 .process-step + .process-step { border-top: 1px solid var(--line); }
 .process-step .dot { position: absolute; inset-inline-start: -56px; top: 30px; width: 40px; height: 40px; border-radius: 50%;
   border: 1px solid var(--line-strong); background: var(--bg); display: grid; place-items: center;
-  font-family: 'Pompei'; font-weight: 500; font-size: 15px; color: var(--muted);
+  font-family: 'Golan'; font-weight: 500; font-size: 15px; color: var(--muted);
   transition: border-color .4s var(--ease), color .4s var(--ease), background-color .4s var(--ease); }
 .process-step.is-active .dot { border-color: var(--cream); color: var(--navy); background: var(--cream); }
 .process-step h3 { margin-bottom: 8px; }
 .process-step p { color: var(--ink-soft); }
 .why-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-m); margin-top: var(--sec); text-align: start; }
 .why-row > div { border-top: 1px solid var(--line-strong); padding-top: 20px; }
-.why-row h3 { font-size: clamp(20px, 1.05vw + 0.58rem, 29px); margin-bottom: 8px; }
+.why-row h3 { font-size: clamp(18px, 0.84vw + 0.5rem, 24px); margin-bottom: 8px; }
 .why-row p { color: var(--ink-soft); font-size: var(--fs-meta); line-height: 1.45; }
 
 /* ==== ABOUT (C1 split) ==== */
@@ -344,7 +349,7 @@ html.qa .preloader { display: none !important; }
 }
 .guide-row:hover { background: var(--surface); padding-inline: 20px; }
 .guide-row .cat { font-size: 13px; letter-spacing: .1em; color: var(--muted); }
-.guide-row .title { font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-body); color: var(--ink); }
+.guide-row .title { font-family: 'Golan'; font-weight: 500; font-size: var(--fs-body); color: var(--ink); }
 .guide-row svg { width: 20px; height: 20px; stroke: var(--muted); fill: none; stroke-width: 1.7; transition: transform .25s var(--ease), stroke .25s var(--ease); }
 .guide-row:hover svg { transform: translateX(-4px); stroke: var(--ink); }
 .guides .after { margin-top: 40px; }
@@ -354,7 +359,7 @@ html.qa .preloader { display: none !important; }
 .faq-item { border-bottom: 1px solid var(--line); }
 .faq-q {
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; text-align: start;
-  padding-block: 22px; font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-body); color: var(--ink);
+  padding-block: 22px; font-family: 'Golan'; font-weight: 500; font-size: var(--fs-body); color: var(--ink);
   transition: color .15s var(--ease);
 }
 .faq-q:hover { color: var(--cream-2); }
@@ -412,7 +417,7 @@ html.qa .preloader { display: none !important; }
 .foot-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--gap-m); align-items: start; }
 .foot-brand img { height: 52px; width: auto; }
 .foot-brand p { margin-top: 18px; font-size: var(--fs-meta); line-height: 1.5; max-width: 360px; }
-.foot-col h4 { font-family: 'Discovery'; font-weight: 500; font-size: var(--fs-meta); color: var(--ink); margin: 0 0 14px; }
+.foot-col h4 { font-family: 'Golan'; font-weight: 500; font-size: var(--fs-meta); color: var(--ink); margin: 0 0 14px; }
 .foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .foot-col a { font-size: var(--fs-meta); transition: color .15s var(--ease); }
 .foot-col a:hover { color: var(--ink); }
@@ -550,7 +555,7 @@ html.qa .paint img { -webkit-mask-image: none !important; mask-image: none !impo
     linear-gradient(to bottom, var(--bg) 0%, rgba(22, 35, 58, .78) 24%, rgba(22, 35, 58, .78) 76%, var(--surface) 100%);
 }
 .breath-line {
-  font-family: 'Pompei'; font-weight: 500; color: var(--ink);
+  font-family: 'Golan'; font-weight: 600; color: var(--ink);
   font-size: var(--fs-h2); line-height: var(--lh-h2);
   max-width: 30ch; margin-inline: auto; text-wrap: balance;
 }
