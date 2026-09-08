@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sverdlov.co.il/sitemap.xml
