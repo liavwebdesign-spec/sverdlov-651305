@@ -635,3 +635,32 @@ html.qa .paint img { -webkit-mask-image: none !important; mask-image: none !impo
   .page-hero-copy { max-width: 100%; }
   .page-hero .btn-row .btn { width: 100%; }
 }
+
+
+/* ===================================================================
+   הבלוג (8.9.2026): עמוד מדריך, פירורי לחם, רשימות קטגוריה
+   =================================================================== */
+.crumbs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  font-size: var(--fs-meta); color: var(--muted); margin-bottom: 18px; }
+.crumbs a { color: var(--ink-soft); transition: color .15s var(--ease); }
+.crumbs a:hover { color: var(--ink); }
+.crumbs span { color: var(--muted-2); }
+
+.guide .page-hero h1 { max-width: 26ch; }
+.guide-body { max-width: 760px; margin-inline: auto; padding-block: var(--sec); }
+.guide-body h2 { font-size: var(--fs-h3); line-height: var(--lh-h3); margin: 44px 0 14px; }
+.guide-body h2:first-child { margin-top: 0; }
+.guide-body p { color: var(--ink-soft); max-width: none; }
+.guide-body p + p { margin-top: 16px; }
+.guide-body a { color: var(--ink); text-decoration: underline; text-underline-offset: 4px;
+  text-decoration-thickness: 1px; text-decoration-color: var(--line-strong);
+  transition: text-decoration-color .2s var(--ease); }
+.guide-body a:hover { text-decoration-color: var(--cream); }
+
+.guide-foot { max-width: 760px; margin-inline: auto; padding-block: 0 var(--sec); }
+.guide-foot p { color: var(--ink-soft); max-width: none; }
+.guide-legal { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line);
+  font-size: 13px; line-height: 1.55; color: var(--muted-2); }
+
+/* השאלות במדריך הן H3 לפי הנחיות הבלוג של לאון, בלי לשנות את מראה האקורדיון */
+.faq-q h3 { font: inherit; margin: 0; color: inherit; }
