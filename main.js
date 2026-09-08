@@ -55,16 +55,30 @@
       /* GSAP מנהל את השקיפות והתזוזה, ולכן לא מוסיפים is-in (שמפעיל keyframe מתחרה) */
       gsap.set(revealEls, { autoAlpha: 0, y: 16 });
       ScrollTrigger.batch(revealEls, {
-        start: 'top 92%',
+        start: 'top 98%',
         once: true,
         onEnter: function (batch) {
           gsap.to(batch, {
-            autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out',
-            stagger: 0.08, overwrite: true
+            autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out',
+            stagger: 0.06, overwrite: true
           });
         }
       });
       ScrollTrigger.refresh();
+      /* רשת ביטחון לגלילה מהירה (הערת לאון, 8.9.2026): אם עצרנו ואלמנט שנמצא
+         על המסך עדיין שקוף, חושפים אותו מיד במקום להשאיר מסך ריק */
+      var idle;
+      window.addEventListener('scroll', function () {
+        clearTimeout(idle);
+        idle = setTimeout(function () {
+          var vh = window.innerHeight, late = [];
+          revealEls.forEach(function (el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < vh && rect.bottom > 0 && +getComputedStyle(el).opacity < 0.9) late.push(el);
+          });
+          if (late.length) gsap.to(late, { autoAlpha: 1, y: 0, duration: 0.25, overwrite: true });
+        }, 120);
+      }, { passive: true });
       return;
     }
 
@@ -82,7 +96,7 @@
   var heroStarted = false;
   var wmPaths = document.querySelectorAll('.hero-watermark path');
   var canDraw = hasGsap && !reduced && typeof DrawSVGPlugin !== 'undefined' && wmPaths.length;
-  if (canDraw) gsap.set(wmPaths, { drawSVG: '0%' });
+  if (canDraw) gsap.set(wmPaths, { drawSVG: '0%', fillOpacity: 0, strokeOpacity: 1 });
 
   function startHero() {
     if (heroStarted) return;
@@ -91,7 +105,11 @@
        והעמוד נפתח סטטי (נתפס בפועל, 6.9.2026) */
     initReveal();
     /* הסימן ממשיך להצטייר בהירו, כהמשך ישיר של הפרילודר */
-    if (canDraw) gsap.to(wmPaths, { drawSVG: '100%', duration: 1.4, ease: 'power2.inOut', stagger: 0.2, delay: 0.15 });
+    /* הסימן מצטייר כמתאר ואז מתמלא, והמתאר נעלם. אחרת נשארת מסגרת מלבנית מוזרה */
+    if (canDraw) gsap.timeline({ delay: 0.15 })
+        .to(wmPaths, { drawSVG: '100%', duration: 1.4, ease: 'power2.inOut', stagger: 0.2 })
+        .to(wmPaths, { fillOpacity: 1, duration: 0.6 }, '-=0.4')
+        .to(wmPaths, { strokeOpacity: 0, duration: 0.4 }, '-=0.3');
     if (!hasGsap || reduced || !heroEls.length) return;
     gsap.timeline({ defaults: { ease: 'power3.out' } })
         .to(heroEls, { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.12 });
@@ -103,8 +121,12 @@
     var t0 = Date.now(), preGone = false;
     var preMark = pre.querySelectorAll('path');
     if (typeof DrawSVGPlugin !== 'undefined' && preMark.length) {
-      gsap.set(preMark, { drawSVG: '0%' });
-      gsap.to(preMark, { drawSVG: '100%', duration: 1.15, ease: 'power2.inOut', stagger: 0.18 });
+      gsap.set(preMark, { drawSVG: '0%', fillOpacity: 0 });
+      gsap.timeline()
+          .to(preMark, { drawSVG: '100%', duration: 1.05, ease: 'power2.inOut', stagger: 0.16 })
+          .to(preMark, { fillOpacity: 1, duration: 0.45, ease: 'power1.out' }, '-=0.25');
+    } else if (preMark.length) {
+      gsap.set(preMark, { fillOpacity: 1 });
     }
     var hidePre = function () {
       if (preGone) return;
