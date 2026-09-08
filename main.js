@@ -151,9 +151,10 @@
     var mmLanes = gsap.matchMedia();
     mmLanes.add('(min-width: 768px)', function () {
       var st = { trigger: '#laneRow', start: 'top 85%', end: 'top 45%', scrub: 1 };
-      /* RTL: הכרטיס הראשון יושב מימין ונכנס מימין (x חיובי) */
-      gsap.from('[data-lane="right"]', { x: '22vw', rotate: -3, autoAlpha: 0, scrollTrigger: st });
-      gsap.from('[data-lane="left"]',  { x: '-22vw', rotate: 3, autoAlpha: 0, scrollTrigger: st });
+      /* RTL: הכרטיס הראשון יושב מימין ונכנס מימין (x חיובי). ב-ru וב-en הכיוון מתהפך */
+      var f = (html.getAttribute('dir') === 'ltr') ? -1 : 1;
+      gsap.from('[data-lane="right"]', { x: (22 * f) + 'vw', rotate: -3, autoAlpha: 0, scrollTrigger: st });
+      gsap.from('[data-lane="left"]',  { x: (-22 * f) + 'vw', rotate: 3, autoAlpha: 0, scrollTrigger: st });
     });
     mmLanes.add('(max-width: 767px)', function () {
       lanes.forEach(function (el) {
