@@ -718,3 +718,13 @@ html[dir="ltr"] .arrow-link svg { transform: scaleX(-1); }
 html[dir="ltr"] .arrow-link:hover svg { transform: scaleX(-1) translateX(-3px); }
 html[dir="ltr"] .guide-row svg { transform: scaleX(-1); }
 html[dir="ltr"] .guide-row:hover svg { transform: scaleX(-1) translateX(-4px); }
+
+
+/* רשימת התחומים כלשונה מהמסמך של לאון (8.9.2026) */
+.leon-list { max-width: 760px; margin-inline: auto; padding: 0; list-style: none; text-align: start; }
+.leon-list li { position: relative; padding: 16px 0 16px 0; padding-inline-start: 26px;
+  border-top: 1px solid var(--line); color: var(--ink-soft); }
+.leon-list li:first-child { border-top: 0; }
+.leon-list li::before { content: ''; position: absolute; inset-inline-start: 0; top: 1.05em;
+  width: 7px; height: 7px; border: 1px solid var(--cream); transform: rotate(45deg); opacity: .7; }
+.areas .measure + .leon-list { margin-top: 28px; }
