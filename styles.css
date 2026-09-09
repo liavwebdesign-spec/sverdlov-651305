@@ -728,3 +728,50 @@ html[dir="ltr"] .guide-row:hover svg { transform: scaleX(-1) translateX(-4px); }
 .leon-list li::before { content: ''; position: absolute; inset-inline-start: 0; top: 1.05em;
   width: 7px; height: 7px; border: 1px solid var(--cream); transform: rotate(45deg); opacity: .7; }
 .areas .measure + .leon-list { margin-top: 28px; }
+
+
+/* ===================================================================
+   ניסוי צבע accent (ליאב, 9.9.2026) · #648DE5
+   רק על עמוד הבית בעברית, דרך body.accent-test, כדי שלאון יוכל להשוות.
+   ניגודיות: accent על נייבי 4.85 (AA), נייבי על accent 4.85 (AA),
+   אבל accent על שמנת ושמנת על accent נותנים 2.88 ונכשלים. לכן כפתור מלא
+   מקבל טקסט נייבי, ובבלוק ההפוך (.flagship) לא נוגעים חוץ מהכרטיס הכהה.
+   =================================================================== */
+body.accent-test { --accent: #648DE5; --accent-strong: #7C9FEA; }
+
+/* כפתורים */
+body.accent-test .btn-primary { background: var(--accent); color: var(--navy); }
+body.accent-test .btn-primary:hover { background: var(--accent-strong); }
+body.accent-test .btn-ghost:hover { border-color: var(--accent); background: rgba(100, 141, 229, .1); }
+
+/* מספור וקווים עריכתיים */
+body.accent-test .kicker .k-num { color: var(--accent); }
+body.accent-test .kicker .k-num::after { background: linear-gradient(to left, var(--accent), transparent); }
+body.accent-test .area::before { background: var(--accent); }
+body.accent-test .area:hover .num { color: var(--accent); }
+body.accent-test .lane:hover { border-color: var(--accent); }
+
+/* קישורי חץ ושורת התחומים */
+body.accent-test .arrow-link { color: var(--accent); }
+body.accent-test .arrow-link:hover { color: var(--accent-strong); }
+body.accent-test .hero-areas a::after { background: var(--accent); }
+body.accent-test .hero-areas a:hover { color: var(--accent); }
+
+/* אייקונים ורשימות */
+body.accent-test .contact-details svg { stroke: var(--accent); }
+body.accent-test .leon-list li::before,
+body.accent-test .flag-list li::before { border-color: var(--accent); opacity: 1; }
+body.accent-test .faq-item.is-open .faq-q svg { stroke: var(--accent); }
+
+/* טופס ופוקוס */
+body.accent-test .field input:focus,
+body.accent-test .field select:focus,
+body.accent-test .field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(100, 141, 229, .25); }
+body.accent-test .consent input { accent-color: var(--accent); }
+body.accent-test .form-success .check { border-color: var(--accent); }
+body.accent-test .form-success .check svg { stroke: var(--accent); }
+body.accent-test :focus-visible { outline-color: var(--accent); }
+
+/* כפתור הנגישות הצף */
+body.accent-test .a11y-btn { background: var(--accent); color: var(--navy); }
+body.accent-test .a11y-btn:hover { background: var(--accent-strong); }
