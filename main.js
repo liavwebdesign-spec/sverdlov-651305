@@ -285,6 +285,157 @@
     window.addEventListener('load', function () { ScrollTrigger.refresh(); paintRail(); });
   }
 
+
+  /* ================================================================
+     סרגל נגישות (9.9.2026) · ת"י 5568 / WCAG 2.0 AA
+     נבנה ב-JS כדי שיהיה זהה בכל העמודים. בלי JS נשאר הקישור להצהרה.
+     ההעדפות נשמרות ב-localStorage ונטענות לפני הצביעה הראשונה.
+     ================================================================ */
+  (function () {
+    var btn = document.querySelector('.a11y-btn');
+    if (!btn) return;
+
+    var L = {
+      he: { title: 'נגישות', open: 'תפריט נגישות', close: 'סגירת תפריט הנגישות',
+            size: 'גודל הטקסט', bigger: 'הגדלת טקסט', smaller: 'הקטנת טקסט',
+            contrast: 'ניגודיות גבוהה', invert: 'היפוך צבעים', gray: 'גווני אפור',
+            links: 'הדגשת קישורים', readable: 'גופן קריא', spacing: 'ריווח שורות ואותיות',
+            still: 'עצירת אנימציות', cursor: 'סמן גדול', ruler: 'קו קריאה',
+            reset: 'איפוס הגדרות', statement: 'הצהרת הנגישות', skip: 'דילוג לתוכן' },
+      en: { title: 'Accessibility', open: 'Accessibility menu', close: 'Close accessibility menu',
+            size: 'Text size', bigger: 'Increase text', smaller: 'Decrease text',
+            contrast: 'High contrast', invert: 'Invert colors', gray: 'Grayscale',
+            links: 'Highlight links', readable: 'Readable font', spacing: 'Line and letter spacing',
+            still: 'Stop animations', cursor: 'Large cursor', ruler: 'Reading guide',
+            reset: 'Reset settings', statement: 'Accessibility statement', skip: 'Skip to content' },
+      ru: { title: 'Доступность', open: 'Меню доступности', close: 'Закрыть меню доступности',
+            size: 'Размер текста', bigger: 'Увеличить текст', smaller: 'Уменьшить текст',
+            contrast: 'Высокая контрастность', invert: 'Инверсия цветов', gray: 'Оттенки серого',
+            links: 'Подчеркнуть ссылки', readable: 'Читаемый шрифт', spacing: 'Межстрочный интервал',
+            still: 'Остановить анимации', cursor: 'Большой курсор', ruler: 'Линейка чтения',
+            reset: 'Сбросить настройки', statement: 'Заявление о доступности', skip: 'Перейти к содержанию' }
+    };
+    var t = L[(html.getAttribute('lang') || 'he')] || L.he;
+    var KEY = 'ls-a11y';
+    var TOGGLES = ['contrast', 'invert', 'gray', 'links', 'readable', 'spacing', 'still', 'cursor', 'ruler'];
+    var SCALES = [1, 1.15, 1.3, 1.45];
+    var state = { size: 0 };
+    try { state = JSON.parse(localStorage.getItem(KEY)) || { size: 0 }; } catch (e) { state = { size: 0 }; }
+
+    function apply() {
+      TOGGLES.forEach(function (k) { html.classList.toggle('a11y-' + k, !!state[k]); });
+      html.style.setProperty('--a11y-scale', SCALES[state.size || 0]);
+      ruler(!!state.ruler);
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    var rulerEl = null, rulerMove = null;
+    function ruler(on) {
+      if (on && !rulerEl) {
+        rulerEl = document.createElement('div');
+        rulerEl.className = 'a11y-ruler';
+        rulerEl.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(rulerEl);
+        rulerMove = function (e) { rulerEl.style.top = ((e.touches ? e.touches[0].clientY : e.clientY) - 1) + 'px'; };
+        document.addEventListener('mousemove', rulerMove, { passive: true });
+        document.addEventListener('touchmove', rulerMove, { passive: true });
+      } else if (!on && rulerEl) {
+        document.removeEventListener('mousemove', rulerMove);
+        document.removeEventListener('touchmove', rulerMove);
+        rulerEl.parentNode.removeChild(rulerEl); rulerEl = null;
+      }
+    }
+
+    /* דילוג לתוכן */
+    var main = document.querySelector('main');
+    if (main) {
+      if (!main.id) main.id = 'main';
+      var skip = document.createElement('a');
+      skip.className = 'skip-link'; skip.href = '#' + main.id; skip.textContent = t.skip;
+      document.body.insertBefore(skip, document.body.firstChild);
+      if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+    }
+
+    /* הפאנל */
+    var statementHref = btn.getAttribute('href') || 'accessibility.html';
+    var panel = document.createElement('div');
+    panel.className = 'a11y-panel';
+    panel.id = 'a11yPanel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', t.title);
+    panel.hidden = true;
+    var opts = TOGGLES.map(function (k) {
+      return '<button type="button" class="a11y-opt" data-a11y="' + k + '" aria-pressed="false">' +
+             '<span class="mark" aria-hidden="true"></span><span>' + t[k] + '</span></button>';
+    }).join('');
+    panel.innerHTML =
+      '<div class="a11y-head"><h2>' + t.title + '</h2>' +
+      '<button type="button" class="a11y-close" aria-label="' + t.close + '">' +
+      '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
+      '<div class="a11y-size"><span>' + t.size + '</span>' +
+      '<button type="button" data-a11y="smaller" aria-label="' + t.smaller + '">A-</button>' +
+      '<button type="button" data-a11y="bigger" aria-label="' + t.bigger + '">A+</button></div>' +
+      '<div class="a11y-grid">' + opts + '</div>' +
+      '<div class="a11y-foot">' +
+      '<button type="button" class="a11y-reset" data-a11y="reset">' + t.reset + '</button>' +
+      '<a class="a11y-statement" href="' + statementHref + '">' + t.statement + '</a></div>';
+    document.body.appendChild(panel);
+
+    /* הכפתור הצף הופך מקישור לכפתור פותח. בלי JS הוא נשאר קישור להצהרה */
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = btn.className;
+    toggle.setAttribute('aria-label', t.open);
+    toggle.setAttribute('title', t.open);
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'a11yPanel');
+    toggle.innerHTML = btn.innerHTML;
+    btn.parentNode.replaceChild(toggle, btn);
+
+    function sync() {
+      panel.querySelectorAll('[data-a11y]').forEach(function (el) {
+        var k = el.getAttribute('data-a11y');
+        if (TOGGLES.indexOf(k) > -1) el.setAttribute('aria-pressed', state[k] ? 'true' : 'false');
+      });
+    }
+    function open(v) {
+      panel.hidden = !v;
+      toggle.setAttribute('aria-expanded', v ? 'true' : 'false');
+      if (v) { sync(); panel.querySelector('.a11y-close').focus(); }
+      else toggle.focus();
+    }
+    toggle.addEventListener('click', function () { open(panel.hidden); });
+    panel.querySelector('.a11y-close').addEventListener('click', function () { open(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !panel.hidden) open(false);
+    });
+    document.addEventListener('click', function (e) {
+      if (!panel.hidden && !panel.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) open(false);
+    });
+    panel.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-a11y]');
+      if (!el) return;
+      var k = el.getAttribute('data-a11y');
+      if (k === 'bigger') state.size = Math.min((state.size || 0) + 1, SCALES.length - 1);
+      else if (k === 'smaller') state.size = Math.max((state.size || 0) - 1, 0);
+      else if (k === 'reset') { state = { size: 0 }; }
+      else state[k] = !state[k];
+      apply(); sync();
+    });
+    apply();
+
+    /* ?a11y=contrast,links · שער QA לצילום מצבי הנגישות */
+    var qs = /[?&]a11y=([a-z,+-]+)/.exec(location.search);
+    if (qs) {
+      qs[1].split(/[,+]/).forEach(function (k) {
+        if (k === 'bigger') state.size = Math.min((state.size || 0) + 1, SCALES.length - 1);
+        else if (TOGGLES.indexOf(k) > -1) state[k] = true;
+      });
+      apply(); sync();
+      if (/(^|[,+])open([,+]|$)/.test(qs[1])) open(true);
+    }
+  })();
+
   /* ---- ?scroll=N: קופץ למיקום גלילה. שער QA לצילומי מסך אוטומטיים ---- */
   var scrollTo = /[?&]scroll=(\d+)/.exec(location.search);
   if (scrollTo) {
